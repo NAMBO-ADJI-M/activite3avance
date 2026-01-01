@@ -1,7 +1,7 @@
 import 'screen/ajout_redacteur_page.dart';
 import 'screen/redacteur_info_page.dart';
 import 'package:flutter/material.dart'; // Widgets Flutter
-import 'package:firebase_core/firebase_core.dart'; // Initialisation Firebase
+import 'package:firebase_core/firebase_core.dart' as firebase_core; // Initialisation Firebase
 
 // Widgets personnalisés
 import 'widgets/drawer_widget.dart';
@@ -15,7 +15,7 @@ import 'widgets/partie_titre.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialisation Firebase
+  await firebase_core.Firebase.initializeApp(); // Initialisation Firebase
   runApp(const MonAppli());
 }
 
@@ -31,8 +31,8 @@ class MonAppli extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const PageAccueil(),
-        '/Ajouter un Rédacteur': (context) => AjoutRedacteurPage(),
-        '/Informations Rédacteur': (context) => RedacteurInfoPage(),
+        '/Ajouter un Rédacteur': (context) => const AjoutRedacteurPage(),
+        '/Informations Rédacteur': (context) => const RedacteurInfoPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -53,7 +53,7 @@ class PageAccueil extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Magazines Infos',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style:  TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.amber,
@@ -75,17 +75,17 @@ class PageAccueil extends StatelessWidget {
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
-          children: const [
-            Image(
-              image: AssetImage('assets/images/magazines.jpg'),
+          children: [
+            Image.asset(
+              'assets/images/magazines.jpg',
               width: double.infinity,
               height: 200,
               fit: BoxFit.cover,
             ),
-            PartieTitre(),
-            PartieTexte(),
-            PartieIcone(),
-            PartieRubrique(),
+            const PartieTitre(),
+            const PartieTexte(),
+            const PartieIcone(),
+            const PartieRubrique(),
           ],
         ),
       ),

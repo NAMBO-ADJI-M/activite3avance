@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 import 'modifier_redacteur_page.dart';
 import 'supprimer_redacteur_page.dart';
 
 class RedacteurInfoPage extends StatelessWidget {
-  RedacteurInfoPage({super.key});
+  const RedacteurInfoPage({super.key});
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -20,50 +21,54 @@ class RedacteurInfoPage extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('redacteurs').snapshots(),
         builder: (context, snapshot) {
+          // Gérer les erreurs
+          if (snapshot.hasError) {
+            return const Center(child: Text('Une erreur est survenue.'));
+          }
+
+          // Afficher un indicateur de chargement
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
+          // Gérer le cas où il n'y a pas de données
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(child: Text('Aucun rédacteur trouvé.'));
           }
 
           final redacteurs = snapshot.data!.docs;
 
+          // Construire la liste
           return ListView.builder(
             itemCount: redacteurs.length,
             itemBuilder: (context, index) {
               final redacteur = redacteurs[index];
-              final data = redacteur.data() as Map<String, dynamic>;
-              final nom = data['nom'] ?? 'Nom inconnu';
-              final specialite = data['specialite'] ?? 'Spécialité inconnue';
+              final redacteurData = redacteur.data() as Map<String, dynamic>;
+              final redacteurId = redacteur.id;
+
+              final nom = redacteurData['nom'] ?? 'Nom non disponible';
+              final specialite =
+                  redacteurData['specialite'] ?? 'Spécialité non disponible';
 
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 4,
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                elevation: 3,
                 child: ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Nom : $nom',
-                          ),
-                      const SizedBox(height: 4),
-                      Text('Spécialité : $specialite'),
-                    ],
-                  ),
+                  title: Text(nom,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(specialite),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit, color: Colors.blue),
-                        tooltip: 'Modifier',
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ModifierRedacteurPage(
-                                redacteurId: redacteur.id,
-                                redacteurData: data,
+                                redacteurId: redacteurId,
+                                redacteurData: redacteurData,
                               ),
                             ),
                           );
@@ -71,14 +76,13 @@ class RedacteurInfoPage extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        tooltip: 'Supprimer',
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SupprimerRedacteurPage(
-                                redacteurId: redacteur.id,
-                                nomRedacteur: nom,
+                                redacteurId: redacteurId,
+                                redacteurData: redacteurData,
                               ),
                             ),
                           );

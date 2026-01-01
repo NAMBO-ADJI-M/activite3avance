@@ -9,7 +9,7 @@ class PartieTitre extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20.0),
       alignment: Alignment.center,
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text (
@@ -21,7 +21,7 @@ class PartieTitre extends StatelessWidget {
             'Votre Magazine numérique, votre source d\'inspirations',
             style: TextStyle(
               fontSize: 16,
-              color: const Color.fromARGB(172, 37, 37, 37), // Couleur grisée
+              color: Color.fromARGB(172, 37, 37, 37), // Couleur grisée
             ),
           ),
         ],
@@ -29,4 +29,3 @@ class PartieTitre extends StatelessWidget {
     );
   }
 }
-
