@@ -5,7 +5,7 @@ import 'modifier_redacteur_page.dart';
 import 'supprimer_redacteur_page.dart';
 
 class RedacteurInfoPage extends StatelessWidget {
-  const RedacteurInfoPage({super.key});
+  RedacteurInfoPage({super.key}); // Constructeur NON constant
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -82,7 +82,7 @@ class RedacteurInfoPage extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => SupprimerRedacteurPage(
                                 redacteurId: redacteurId,
-                                redacteurData: redacteurData,
+                                nomRedacteur: nom,
                               ),
                             ),
                           );

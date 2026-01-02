@@ -32,7 +32,7 @@ class MonAppli extends StatelessWidget {
       routes: {
         '/': (context) => const PageAccueil(),
         '/Ajouter un Rédacteur': (context) => const AjoutRedacteurPage(),
-        '/Informations Rédacteur': (context) => const RedacteurInfoPage(),
+        '/Informations Rédacteur': (context) => RedacteurInfoPage(), // const retiré ici
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -53,7 +53,7 @@ class PageAccueil extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Magazines Infos',
-          style:  TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.amber,
